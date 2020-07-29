@@ -4,6 +4,7 @@ from tkinter import messagebox
 from psycopg2 import *
 from menu_window import Menu_window
 from manage_menu_window import Manage_menu_window
+from manage_employees import Manage_staff
 
 
 class Login_window:
@@ -28,7 +29,7 @@ class Login_window:
         self.frame2.pack()
 
         self.user_label = ttk.Label(self.frame2, text='User ID :')
-        self.entry_user_id = Text(self.frame2, height=1, width=35, relief=GROOVE, font=("arial", 20))
+        self.entry_user_id = ttk.Entry(self.frame2, width=35, font=("arial", 20))
 
         self.pw_label = ttk.Label(self.frame2, text="Password :")
         self.entry_password = ttk.Entry(self.frame2, width=35, show="*", font=("arial", 20))
@@ -44,10 +45,10 @@ class Login_window:
         self.frame1.configure(width=50, height=50)
 
         self.frame1.pack(fill=BOTH, padx=15, pady=15)
-        self.button_login = ttk.Button(self.frame1, text="Login", command=self.Login)
-        self.button_Cancel = ttk.Button(self.frame1, text="Cancel", command=self.exit_event)
-        self.button_login.grid(row=0, column=1, padx=90, ipady=10, ipadx=20, pady=10)
-        self.button_Cancel.grid(row=0, column=2, padx=90, ipady=10, ipadx=20, pady=10)
+        self.button_login = Button(self.frame1, text="Login", command=self.Login, bg="blue", fg="white")
+        self.button_Cancel = Button(self.frame1, text="Cancel", command=self.exit_event, bg="blue", fg="white")
+        self.button_login.grid(row=0, column=1, padx=100, ipady=10, ipadx=25, pady=10)
+        self.button_Cancel.grid(row=0, column=2, padx=100, ipady=10, ipadx=25, pady=10)
 
         self.label2 = ttk.Label(login_master, background="blue", foreground="white",
                                 text="    Welcome, to the Restaurant",
@@ -64,7 +65,8 @@ class Login_window:
     # login validation function
     def Login(self, h=None):
         h = self.entry_password.get()
-        g = self.entry_user_id.get(0.0, "end")
+        g = self.entry_user_id.get()
+
         try:
             if len(h) > 10 or len(g) > 10:
                 messagebox.showerror(title="invalid value", message="Invalid Credentials")
@@ -74,14 +76,13 @@ class Login_window:
 
             with connect(database="learning", user="postgres", password="782489", host="localhost") as connection:
                 with connection.cursor() as cursor:
-                    cursor.execute("select password from users Where user_id = %s", (g,))
+                    cursor.execute("select password from users Where id = '%s'", (int(g),))
+
                     pw = tuple(cursor)[0][0]
-                    if pw == int(h):
+
+                    if pw == h:
                         # calling the main window
                         self.login_master.destroy()
-
-
-
                     else:
                         messagebox.showerror(title="Something when's wrong!", message="Incorrect password!")
         except:
@@ -102,6 +103,15 @@ class Main_Window:
         master_main.title("Restaurant Management system")
         master_main.geometry("1301x800+250+130")
         master_main.resizable(False, False)
+
+        self.menu = Menu(master_main)
+        master_main.config(menu=self.menu)
+        self.submenu = Menu(self.menu)
+        self.submenu1 = Menu(self.menu)
+        self.menu.add_cascade(label="File", menu=self.submenu)
+        self.menu.add_cascade(label="Help", menu=self.submenu1)
+        self.submenu.add_command(label="Exit", command=sys.exit)
+
 
 
         # creating the main heading
@@ -129,7 +139,7 @@ class Main_Window:
         self.order_button = ttk.Button(self.frame_buttons, text="Order Management",
                                        image=self.order_img, compound=TOP)
         self.employees_button = ttk.Button(self.frame_buttons, text="Manage Employees",
-                                           image=self.employees_img, compound=TOP)
+                                           image=self.employees_img, compound=TOP, command=Manage_staff)
         self.menu_items_button = ttk.Button(self.frame_buttons, text="Manage Menu Items",
                                             image=self.menu_items_img, compound=TOP, command=Manage_menu_window)
 
