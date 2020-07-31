@@ -8,7 +8,7 @@ from tkinter import *
 class Manage_staff:
     def __init__(self):
         self.top = Toplevel()
-        self.top.title("Show Menu")
+        self.top.title("Show Staff")
         self.top.geometry("1301x820+250+130")
         self.top.resizable(False, False)
 
@@ -70,11 +70,14 @@ class Manage_staff:
     def delete(self):
         ci = self.tv.focus()
         table_value = self.tv.item(ci)
-        popup = messagebox.askyesno(title="asking", message="Do you went to delete this user")
-        if popup:
-            with connection_pool.getconn() as connection:
-                with connection.cursor() as cursor:
-                    cursor.execute("delete from users Where id=%s", (table_value['text'],))
+        if len(table_value["text"]) == 0 or len(table_value["values"]) == 0:
+            messagebox.showerror("please select something", "Select the user which one should you went to delete")
+        else:
+            popup = messagebox.askyesno(title="asking", message="Do you went to delete this user")
+            if popup:
+                with connection_pool.getconn() as connection:
+                    with connection.cursor() as cursor:
+                        cursor.execute("delete from users Where id=%s", (table_value['text'],))
 
     def edit(self):
 
