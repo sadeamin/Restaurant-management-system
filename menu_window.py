@@ -36,7 +36,7 @@ def Menu_window():
 
     with connection_pool.getconn() as connection:
         with connection.cursor() as cursor:
-            cursor.execute("select * from menu")
+            cursor.execute("select id as total, name, price, type from menu order by total")
             for item in list(cursor):
                 tv.insert('', "end", text=f"{item[0]}", values=(f'{item[1]}', f'{item[2]}', f'{item[3]}'))
 
@@ -58,7 +58,7 @@ def Menu_window():
         tv.delete(*tv.get_children())
         with connection_pool.getconn() as connection:
             with connection.cursor() as cursor:
-                cursor.execute("select * from menu")
+                cursor.execute("select id as total, name, price, type from menu order by total")
                 for item in list(cursor):
                     tv.insert('', "end", text=f"{item[0]}", values=(f'{item[1]}', f'{item[2]}', f'{item[3]}'))
 
@@ -71,7 +71,7 @@ def Menu_window():
         tv.delete(*tv.get_children())
         with connection_pool.getconn() as connection:
             with connection.cursor() as cursor:
-                cursor.execute("select * from menu Where type = 'Main'")
+                cursor.execute("select id as total, name, price, type from menu Where type = 'Main' order by total")
                 for item in list(cursor):
                     tv.insert('', "end", text=f"{item[0]}", values=(f'{item[1]}', f'{item[2]}', f'{item[3]}'))
 
@@ -86,7 +86,7 @@ def Menu_window():
 
         with connection_pool.getconn() as connection:
             with connection.cursor() as cursor:
-                cursor.execute("select * from menu Where type = 'Drink'")
+                cursor.execute("select id as total, name, price, type from menu Where type = 'Drink' order by total")
                 for item in list(cursor):
                     tv.insert('', "end", text=f"{item[0]}", values=(f'{item[1]}', f'{item[2]}', f'{item[3]}'))
 
@@ -100,7 +100,7 @@ def Menu_window():
 
         with connection_pool.getconn() as connection:
             with connection.cursor() as cursor:
-                cursor.execute("select * from menu Where type = 'Alcohol'")
+                cursor.execute("select id as total, name, price, type from menu Where type = 'Alcohol' order by total")
                 for item in list(cursor):
                     tv.insert('', "end", text=f"{item[0]}", values=(f'{item[1]}', f'{item[2]}', f'{item[3]}'))
 
@@ -109,12 +109,12 @@ def Menu_window():
         tv.column("price", anchor="center")
         tv.column("type", anchor="center")
 
-    def dessert ():
+    def dessert():
         tv.delete(*tv.get_children())
 
         with connection_pool.getconn() as connection:
             with connection.cursor() as cursor:
-                cursor.execute("select * from menu Where type = 'Dessert'")
+                cursor.execute("select id as total, name, price, type from menu Where type = 'Dessert' order by total")
                 for item in list(cursor):
                     tv.insert('', "end", text=f"{item[0]}", values=(f'{item[1]}', f'{item[2]}', f'{item[3]}'))
 
@@ -122,6 +122,7 @@ def Menu_window():
         tv.column("name", anchor="center")
         tv.column("price", anchor="center")
         tv.column("type", anchor="center")
+
 
     button_all = Button(frame_buttons, text="All", bg="blue", fg="#FFD5C6", height=3, width=15, command=all)
     button_main = Button(frame_buttons, text="Main", bg="blue", fg="#FFD5C6", height=3, width=15, command=main)
