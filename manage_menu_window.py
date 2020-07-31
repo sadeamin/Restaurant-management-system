@@ -153,11 +153,16 @@ def Manage_menu_window():
     def delete():
         ci = tv.focus()
         table_value = tv.item(ci)
-        popup = messagebox.askyesno(title="asking", message="Do you went to delete this item")
-        if popup:
-            with connection_pool.getconn() as connection:
-                with connection.cursor() as cursor:
-                    cursor.execute("delete from menu Where id=%s", (table_value['text'],))
+
+        if len(table_value["text"]) == 0 or len(table_value["values"]) == 0:
+            messagebox.showerror("warning", "Select any item which one should you went to edit")
+
+        else:
+            popup = messagebox.askyesno(title="asking", message="Do you went to delete this item")
+            if popup:
+                with connection_pool.getconn() as connection:
+                    with connection.cursor() as cursor:
+                        cursor.execute("delete from menu Where id=%s", (table_value['text'],))
 
     def Add_new_item():
         top_1 = Toplevel()
