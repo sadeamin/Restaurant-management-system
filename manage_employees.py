@@ -8,7 +8,7 @@ from tkinter import *
 class Manage_staff:
     def __init__(self):
         self.top = Toplevel()
-        self.top.title("Show Staff")
+        self.top.title("Manage Employees")
         self.top.geometry("1301x820+250+130")
         self.top.resizable(False, False)
 
@@ -44,16 +44,16 @@ class Manage_staff:
         self.frame_buttons.configure(width=1301, height=75)
         self.frame_buttons.pack(side="bottom", pady=10)
 
-        self.button_add_item = Button(self.frame_buttons, text="Add New Staff", command=self.Add_new_employee,
+        self.button_add_staff = Button(self.frame_buttons, text="Add New Staff", command=self.Add_new_employee,
                                       bg="blue",
                                       fg="white")
-        self.button_add_item.grid(ipadx=30, ipady=20, padx=10)
+        self.button_add_staff.grid(ipadx=30, ipady=20, padx=10)
 
-        self.button_edit_item = Button(self.frame_buttons, text="Edit Staff", bg="blue", fg="white", command=self.edit)
-        self.button_edit_item.grid(ipadx=30, ipady=20, row=0, column=1, padx=10)
+        self.button_edit_staff = Button(self.frame_buttons, text="Edit Staff", bg="blue", fg="white", command=self.edit)
+        self.button_edit_staff.grid(ipadx=30, ipady=20, row=0, column=1, padx=10)
 
-        self.button_delete_item = Button(self.frame_buttons, text="Delete Staff", bg="blue", fg="white", command=self.delete)
-        self.button_delete_item.grid(ipadx=30, ipady=20, row=0, column=2, padx=10)
+        self.button_delete_staff = Button(self.frame_buttons, text="Delete Staff", bg="blue", fg="white", command=self.delete)
+        self.button_delete_staff.grid(ipadx=30, ipady=20, row=0, column=2, padx=10)
 
         self.button_refresh = Button(self.frame_buttons, text="   Refresh    ", bg="blue", fg="white",
                                      command=self.refresh)

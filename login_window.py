@@ -5,10 +5,11 @@ from psycopg2 import *
 from menu_window import Menu_window
 from manage_menu_window import Manage_menu_window
 from manage_employees import Manage_staff
+from order_window import *
 
 
 class Login_window:
-
+    USER = 'First'
     def __init__(self, login_master=Tk()):  # Tk() the Tk() default parameter
         self.login_master = login_master
         login_master.title("Login")
@@ -31,8 +32,10 @@ class Login_window:
         self.user_label = ttk.Label(self.frame2, text='User ID :')
         self.entry_user_id = ttk.Entry(self.frame2, width=35, font=("arial", 20))
 
+        self.strvar = StringVar()
+
         self.pw_label = ttk.Label(self.frame2, text="Password :")
-        self.entry_password = ttk.Entry(self.frame2, width=35, show="*", font=("arial", 20))
+        self.entry_password = ttk.Entry(self.frame2, width=35, show="*", font=("arial", 20), textvariable=self.strvar)
         self.entry_password.config(show="*")
         self.entry_password.bind("<Return>", self.Login)
 
@@ -88,8 +91,17 @@ class Login_window:
         except:
             messagebox.showerror(title="Error", message="Incorrect Id or some is wrong!")
 
+        connection = connect(database="learning", user="postgres", password="782489", host="localhost")
+        cursor = connection.cursor()
+        cursor.execute("select * from public.users Where password=%s", (self.strvar.get(),))
+        self.login_name = tuple(cursor)
+        Login_window.USER = self.login_name
+        
+
     def main_loop_window(self):
+
         self.login_master.mainloop()
+
 
 
 login_page = Login_window()
@@ -97,7 +109,7 @@ login_page.main_loop_window()
 
 ### Main Window ###
 
-class Main_Window:
+class Main_Window(Login_window):
     def __init__(self, master_main = Tk()):
         self.master_main = master_main
         master_main.title("Restaurant Management system")
@@ -111,8 +123,6 @@ class Main_Window:
         self.menu.add_cascade(label="File", menu=self.submenu)
         self.menu.add_cascade(label="Help", menu=self.submenu1)
         self.submenu.add_command(label="Exit", command=sys.exit)
-
-
 
         # creating the main heading
         self.main_heading = ttk.Label(self.master_main, text="Restaurant Management System", foreground="red", font=("arial", 30, "bold italic"))
@@ -136,7 +146,7 @@ class Main_Window:
                                       compound=TOP, command=Menu_window)
         self.payments_button = ttk.Button(self.frame_buttons, text="Show Payments",
                                           image=self.payments_img, compound=TOP)
-        self.order_button = ttk.Button(self.frame_buttons, text="Order Management",
+        self.order_button = ttk.Button(self.frame_buttons, text="Order Management", command=Order_management_system,
                                        image=self.order_img, compound=TOP)
         self.employees_button = ttk.Button(self.frame_buttons, text="Manage Employees",
                                            image=self.employees_img, compound=TOP, command=Manage_staff)
@@ -149,7 +159,7 @@ class Main_Window:
         self.menu_items_button.grid(ipadx=47, ipady=40, pady=5)
         self.payments_button.grid(ipadx=60, ipady=45, pady=5)
 
-        self.label = ttk.Label(text="Logged in as : ")
+        self.label = ttk.Label(text=f"Logged in as : {Login_window.USER[0][1]} {Login_window.USER[0][2]}")
         self.label.grid(row=2, column=0, sticky="sw")
 
     def mainloop_mainWindow(self):

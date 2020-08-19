@@ -1,14 +1,13 @@
 # from login_window import Menu_window
 from tkinter import Toplevel, ttk, Button
 from psycopg2 import *
-
 from connection_poll import connection_pool
 
 N='n'
 S='s'
 W='w'
 E='e'
-
+# print(USER_INFO)
 def Menu_window():
     top = Toplevel()
     top.title("Show Menu")

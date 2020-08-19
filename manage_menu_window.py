@@ -9,7 +9,7 @@ from tkinter import *
 
 def Manage_menu_window():
     top = Toplevel()
-    top.title("Show Menu")
+    top.title("Manage Menu")
     top.geometry("1301x820+250+130")
     top.resizable(False, False)
 
@@ -50,65 +50,70 @@ def Manage_menu_window():
     def edit():
         ci = tv.focus()
         table_value = tv.item(ci)
-        top_1 = Toplevel()
-        top_1.title("Add New Menu Item")
-        top_1.geometry("620x495+550+230")
-        top_1.resizable(False, False)
 
-        label_id = ttk.Label(top_1,
-                             text="Menu Item Id :                     "
-                                  "                                                   ",
-                             font=("arial", 15))
-        label_id.pack(pady=5)
+        if len(table_value["text"]) == 0 or len(table_value["values"]) == 0:
+            messagebox.showerror("warning", "Select any item which one should you went to edit")
 
-        strvar1 = StringVar()
+        else:
+            top_1 = Toplevel()
+            top_1.title("Add New Menu Item")
+            top_1.geometry("620x495+550+230")
+            top_1.resizable(False, False)
 
-        entry_id = Entry(top_1, width=50, font=("arial", 15), textvariable=strvar1)
-        entry_id.pack(pady=20)
-        entry_id.insert(0, table_value['text'])
-        entry_id.config(state="disable")
-        # entry_id.state(["disabled"])
+            label_id = ttk.Label(top_1,
+                                 text="Menu Item Id :                     "
+                                      "                                                   ",
+                                 font=("arial", 15))
+            label_id.pack(pady=5)
 
-        label_id = ttk.Label(top_1,
-                             text="Menu Item Name :                                                                  ",
-                             font=("arial", 15))
-        label_id.pack(pady=5)
+            strvar1 = StringVar()
 
-        strvar2 = StringVar()
+            entry_id = Entry(top_1, width=50, font=("arial", 15), textvariable=strvar1)
+            entry_id.pack(pady=20)
+            entry_id.insert(0, table_value['text'])
+            entry_id.config(state="disable")
+            # entry_id.state(["disabled"])
 
-        entry_name = Entry(top_1, width=50, font=("arial", 15), textvariable=strvar2)
-        entry_name.insert(0, table_value['values'][0])
-        entry_name.pack(pady=20)
+            label_id = ttk.Label(top_1,
+                                 text="Menu Item Name :                                                                  ",
+                                 font=("arial", 15))
+            label_id.pack(pady=5)
 
-        label_id = ttk.Label(top_1,
-                             text="Menu Item Price :                                                                   ",
-                             font=("arial", 15))
-        label_id.pack(pady=5)
+            strvar2 = StringVar()
 
-        strvar3 = StringVar()
+            entry_name = Entry(top_1, width=50, font=("arial", 15), textvariable=strvar2)
+            entry_name.insert(0, table_value['values'][0])
+            entry_name.pack(pady=20)
 
-        entry_price = Entry(top_1, width=50, font=("arial", 15), textvariable=strvar3)
-        entry_price.insert(0, table_value['values'][1])
-        entry_price.pack(pady=20)
+            label_id = ttk.Label(top_1,
+                                 text="Menu Item Price :                                                                   ",
+                                 font=("arial", 15))
+            label_id.pack(pady=5)
 
-        label_id = ttk.Label(top_1,
-                             text="type :                                                               "
-                                  "                  "
-                                  "   ", font=("arial", 15))
-        label_id.pack(pady=5)
+            strvar3 = StringVar()
 
-        combobox_type = ttk.Combobox(top_1, width=48, font=("arial", 15))
-        combobox_type.config(value=["Main", "Drink", "Alcohol", "Dessert"])
-        combobox_type.insert(0, table_value['values'][2])
-        combobox_type.state(["readonly"])
-        combobox_type.pack(pady=15)
+            entry_price = Entry(top_1, width=50, font=("arial", 15), textvariable=strvar3)
+            entry_price.insert(0, table_value['values'][1])
+            entry_price.pack(pady=20)
 
-        style = ttk.Style()
-        style.configure(style="frame.TFrame", background="blue")
+            label_id = ttk.Label(top_1,
+                                 text="type :                                                               "
+                                      "                  "
+                                      "   ", font=("arial", 15))
+            label_id.pack(pady=5)
 
-        frame_buttons_1 = ttk.Frame(top_1)
-        frame_buttons_1.configure(width=550, height=60)
-        frame_buttons_1.pack()
+            combobox_type = ttk.Combobox(top_1, width=48, font=("arial", 15))
+            combobox_type.config(value=["Main", "Drink", "Alcohol", "Dessert"])
+            combobox_type.insert(0, table_value['values'][2])
+            combobox_type.state(["readonly"])
+            combobox_type.pack(pady=15)
+
+            style = ttk.Style()
+            style.configure(style="frame.TFrame")
+
+            frame_buttons_1 = ttk.Frame(top_1)
+            frame_buttons_1.configure(width=550, height=60)
+            frame_buttons_1.pack()
 
         def Update():
             popup = messagebox.askyesno(title="asking", message="Do you went to update this item")
@@ -210,7 +215,7 @@ def Manage_menu_window():
         combobox_type.pack(pady=15)
 
         frame_buttons_1 = ttk.Frame(top_1)
-        frame_buttons_1.configure(width=550, height=60, style="frame.TFrame")
+        frame_buttons_1.configure(width=550, height=60)
         frame_buttons_1.pack()
 
 
@@ -218,7 +223,7 @@ def Manage_menu_window():
 
             if len(entry_id.get()) == 0 or \
                     len(entry_name.get()) == 0 or \
-                    len(entry_price.get()) == 0 or len(combobox_type.get()) == 0:
+                    len(entry_price.get()) == 0 or len(combobox_type.get()) == 0 or type(entry_price) == "<class 'float'>":
                 messagebox.showerror("warning", "Id id empty please fill it.")
 
             else:
