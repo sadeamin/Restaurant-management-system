@@ -96,7 +96,6 @@ class Login_window:
         cursor.execute("select * from public.users Where password=%s", (self.strvar.get(),))
         self.login_name = tuple(cursor)
         Login_window.USER = self.login_name
-        
 
     def main_loop_window(self):
 
